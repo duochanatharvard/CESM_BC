@@ -1,0 +1,18 @@
+ &cntlvars
+ mon1 = 1
+ iyr1 = 0 
+ monn = 12
+ iyrn = 19
+ mon1rd = 1
+ iyr1rd = 0
+ monnrd = 12
+ iyrnrd = 19
+ mon1clm = 1
+ iyr1clm = 0
+ monnclm = 12
+ iyrnclm = 19
+ mon1out = 1
+ iyr1out = 0
+ monnout = 12
+ iyrnout = 19
+ /
