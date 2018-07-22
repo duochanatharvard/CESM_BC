@@ -155,7 +155,7 @@ ncks -A -d time,0,${num_mon_0} -v time ${dir_forcing}sst_HadOIBl_bc_1x1_1850_201
 # extract date (using ncks) and place in working netcdf file.
 
 # This is achived using the following matlab code
-matlab -nosplash -nodesktop -r "N=${num_yr};year=repmat([0:1:N-1],12,1);month=repmat([1:12]',1,N);day=repmat([16;15;repmat(16,10,1)],1,N);a=(year*10000+month*100+day);file=[${dir_data},'sea_ice/ssticetemp.nc'];nccreate(file,'date','Dimensions',{'time',12*N},'Datatype','int32');ncwrite(file,'date',a(:));ncwriteatt(file,'date','long_name','current date (YYYYMMDD)');quit;">>log_snd
+matlab -nosplash -nodesktop -r "N=${num_yr};year=repmat([0:1:N-1],12,1);month=repmat([1:12]',1,N);day=repmat([16;15;repmat(16,10,1)],1,N);a=(year*10000+month*100+day);file=['${dir_data}','/sea_ice/ssticetemp.nc'];nccreate(file,'date','Dimensions',{'time',12*N},'Datatype','int32');ncwrite(file,'date',a(:));ncwriteatt(file,'date','long_name','current date (YYYYMMDD)');quit;">>log_snd
 
 # Add datesec variable: extract (using ncks) datesec (correct number of months) from existing amip sst file and place in working netcdf file.
 ncks -A -d time,0,${num_mon_0} -v datesec ${dir_forcing}sst_HadOIBl_bc_1x1_1850_2016_c170525_2.nc ssticetemp.nc
