@@ -9,7 +9,7 @@
 #######################################################
 # Setting Parameters
 #######################################################
-export casename="E_4pi"
+export casename="E_pi"
 
 # directory of this file and icesst toolbox
 export dir_tool="/n/home10/dchan/icesst"
@@ -35,12 +35,12 @@ export yr_clim_ed=${num_yr_0}
 #######################################################
 cd ${dir_data}
 mkdir sea_ice
-nohup mv -i ${casename}.cice.h.004*.nc sea_ice/  &
-nohup mv -i ${casename}.cice.h.005*.nc sea_ice/  &
-nohup mv -i ${casename}.cice.h.006*.nc sea_ice/  &
-nohup mv -i ${casename}.cice.h.007*.nc sea_ice/  &
-nohup mv -i ${casename}.cice.h.008*.nc sea_ice/  &
-nohup mv -i ${casename}.cice.h.009*.nc sea_ice/  &
+mv -i ${casename}.cice.h.004*.nc sea_ice/  
+mv -i ${casename}.cice.h.005*.nc sea_ice/ 
+mv -i ${casename}.cice.h.006*.nc sea_ice/  
+mv -i ${casename}.cice.h.007*.nc sea_ice/  
+mv -i ${casename}.cice.h.008*.nc sea_ice/  
+mv -i ${casename}.cice.h.009*.nc sea_ice/  
 cd sea_ice
 
 #######################################################
