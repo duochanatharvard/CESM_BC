@@ -9,18 +9,18 @@
 #######################################################
 # Setting Parameters
 #######################################################
-export casename="E_4c"
+export casename="E_4pi"
 
 # directory of this file and icesst toolbox
-export dir_tool=$(pwd)
+export dir_tool="/n/home10/dchan/icesst"
 
 # directory of SST and seaice data
-export dir_data="/n/regal/huybers_lab/dchan/cesm_output/${casename}/run/"
+export dir_data="/n/regal/huybers_lab/dchan/cesm_output/${casename}/ice/hist/"
 
 # directory of forcing files
 export dir_forcing="/n/home10/dchan/holy_kuang/cesm_output/CESM_input/atm/cam/sst/"
 
-export num_yr=20
+export num_yr=60
 export num_yr_0=`expr $num_yr - 1`
 export num_mon=`expr $num_yr \* 12`
 export num_mon_0=`expr $num_yr \* 12 - 1`
@@ -33,11 +33,14 @@ export yr_clim_ed=${num_yr_0}
 # copy the target files into a working directory
 # Modify these lines for your requirements
 #######################################################
-cd ${casename}
+cd ${dir_data}
 mkdir sea_ice
-nohup cp -i ${casename}.cice.h.004*.nc sea_ice/  &
-nohup cp -i ${casename}.cice.h.005*.nc sea_ice/  &
-nohup cp -i ${casename}.cice.h.006*.nc sea_ice/  &
+nohup mv -i ${casename}.cice.h.004*.nc sea_ice/  &
+nohup mv -i ${casename}.cice.h.005*.nc sea_ice/  &
+nohup mv -i ${casename}.cice.h.006*.nc sea_ice/  &
+nohup mv -i ${casename}.cice.h.007*.nc sea_ice/  &
+nohup mv -i ${casename}.cice.h.008*.nc sea_ice/  &
+nohup mv -i ${casename}.cice.h.009*.nc sea_ice/  &
 cd sea_ice
 
 #######################################################
@@ -145,7 +148,12 @@ cp sst_cpl_new2.nc ssticetemp.nc
 # Note that the target file here is the HadISST AMIP forcing file
 # Please make sure that the data format are consistent in the two files
 # Other wise convert with ncap2 first
-ncap2  -s 'time=float(time)' sst_HadOIBl_bc_1x1_1850_2016_c170525.nc  sst_HadOIBl_bc_1x1_1850_2016_c170525_2.nc
+
+# For first time users, leave these lines un-commented
+# cd ${dir_forcing}
+# ncap2  -s 'time=float(time)' sst_HadOIBl_bc_1x1_1850_2016_c170525.nc  sst_HadOIBl_bc_1x1_1850_2016_c170525_2.nc
+# cd -
+
 ncks -A -d time,0,${num_mon_0} -v time ${dir_forcing}sst_HadOIBl_bc_1x1_1850_2016_c170525_2.nc ssticetemp.nc
 
 # Add date variable: ncdump date variable from existing amip sst file;
@@ -185,7 +193,7 @@ cp ssticetemp.nc ssticetemp_new.nc
 ncrename -v SST_cpl,SST -v ice_cov,ICEFRAC ssticetemp_new.nc
 
 # Modify namelist accordingly.
-cd dir_tool
+cd ${dir_tool}
 cd bcgen
 sed -i "s/\( iyrn = \).*/\1${num_yr_0}/"             namelist
 sed -i "s/\( iyrnout = \).*/\1${num_yr_0}/"          namelist
@@ -199,6 +207,7 @@ gmake
 # Run the bcgen code and the resulting sstice_ts.nc
 # file is the desired ICE/SST file.
 rm  ssticetemp_new.nc
+rm  *.nc
 ln -sf ${dir_data}/sea_ice/ssticetemp_new.nc .
 ./bcgen -i ssticetemp_new.nc -c sstice_clim_${casename}.nc -t sstice_ts_${casename}.nc < namelist
 
